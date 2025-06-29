@@ -1,0 +1,12 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Launch Enigma",
+      "request": "launch",
+      "mainClass": "enigma.Main",
+      "vmArgs": "--module-path /Users/sondreespe/.m2/repository/org/openjfx/javafx-base/21/javafx-base-21-mac-aarch64.jar:/Users/sondreespe/.m2/repository/org/openjfx/javafx-graphics/21/javafx-graphics-21-mac-aarch64.jar:/Users/sondreespe/.m2/repository/org/openjfx/javafx-controls/21/javafx-controls-21-mac-aarch64.jar --add-modules javafx.controls"
+    }
+  ]
+}
