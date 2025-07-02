@@ -48,11 +48,11 @@ public class Keyboard {
     }
    
 
-    // nytt:
+    // knappen lyser opp når lik tast trykkes tasten trykkes
     public void highlightKey(char letter) {
-        Button btn = keyMap.get(Character.toUpperCase(letter));
-        if (btn != null) {
-            btn.setStyle(
+        Button btn = keyMap.get(Character.toUpperCase(letter));// henter knappen fra keyMap basert på bokstaven
+        if (btn != null) {// sjekker om knappen finnes
+            btn.setStyle( // bytter farge på knappen
                 "-fx-background-radius: 50%; " +
                 "-fx-background-color: yellow; " +
                 "-fx-border-width: 2px; " +

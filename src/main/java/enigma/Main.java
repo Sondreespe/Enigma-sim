@@ -9,13 +9,14 @@ import javafx.stage.Stage;
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
-        // midtdelen - tastaturet
-        Keyboard keyboard = new Keyboard();
-        var keyboardPane = keyboard.createKeyboard();
-
+      
         // øvre del - rotor panel (placeholder)
         Label rotorPlaceholder = new Label("Rotorer (kommer senere)");
         rotorPlaceholder.setStyle("-fx-font-size: 24px; -fx-padding: 20px;");
+
+         // midtdelen - tastaturet
+        Keyboard keyboard = new Keyboard();
+        var keyboardPane = keyboard.createKeyboard();
 
         // nedre del - plugboard panel (placeholder)
         Label plugboardPlaceholder = new Label("Plugboard (kommer senere)");
@@ -27,9 +28,9 @@ public class Main extends Application {
         root.setCenter(keyboardPane);
         root.setBottom(plugboardPlaceholder);
 
-        Scene scene = new Scene(root, 1000, 800);
+        Scene scene = new Scene(root, 1000, 800); // lager vinduet som blir UI
 
-        // tastatur-lysstyring
+        // Opplysning av tastetrykk
         scene.setOnKeyPressed(event -> {
             String key = event.getText();
             if (key.matches("[a-zA-Z]")) {
@@ -37,6 +38,7 @@ public class Main extends Application {
             }
         });
 
+        // spesifikasjoner for vinduet
         primaryStage.setScene(scene);
         primaryStage.setTitle("Enigma Simulator");
         primaryStage.show();
