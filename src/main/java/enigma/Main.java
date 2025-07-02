@@ -27,6 +27,8 @@ public class Main extends Application {
         root.setTop(rotorPlaceholder);
         root.setCenter(keyboardPane);
         root.setBottom(plugboardPlaceholder);
+        root.setStyle("-fx-background-image: url('/enigma/bg1.jpg'); " +
+              "-fx-background-size: cover;");
 
         Scene scene = new Scene(root, 1000, 800); // lager vinduet som blir UI
 

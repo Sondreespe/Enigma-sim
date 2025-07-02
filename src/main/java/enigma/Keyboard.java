@@ -25,7 +25,7 @@ public class Keyboard {
     };
 
     for (String row : rows) {
-        HBox rowBox = new HBox(10);  // lager an box for hver radspacing mellom bokstaver
+        HBox rowBox = new HBox(20);  // lager an box for hver radspacing mellom bokstaver
         rowBox.setAlignment(Pos.CENTER);
 
         for (char c : row.toCharArray()) {
@@ -34,9 +34,10 @@ public class Keyboard {
             btn.setPrefHeight(60);
             btn.setStyle( // styling
                 "-fx-background-radius: 50%; " +
-                "-fx-background-color: lightgray; " +
+                "-fx-background-color: black; " +
                 "-fx-border-width: 2px; " +
-                "-fx-font-size: 18px;"
+                "-fx-font-size: 18px;" + 
+                "-fx-text-fill: lightgrey;"
             );
             keyMap.put(c, btn);// legger til knappen i keyMap for å kunne referere til den senere
             rowBox.getChildren().add(btn);// legger til knappen i rowBox
@@ -56,16 +57,18 @@ public class Keyboard {
                 "-fx-background-radius: 50%; " +
                 "-fx-background-color: yellow; " +
                 "-fx-border-width: 2px; " +
-                "-fx-font-size: 18px;"
+                "-fx-font-size: 18px;" 
+                
             );
             // skru av “lyset” etter 300 ms
             new Thread(() -> {
                 try { Thread.sleep(500); } catch (InterruptedException ignored) {}
                 javafx.application.Platform.runLater(() -> btn.setStyle(
                     "-fx-background-radius: 50%; " +
-                    "-fx-background-color: lightgray; " +
+                    "-fx-background-color: black; " +
                     "-fx-border-width: 2px; " +
-                    "-fx-font-size: 18px;"
+                    "-fx-font-size: 18px;" +
+                    "-fx-text-fill: lightgrey;"
                 ));
             }).start();
         }
