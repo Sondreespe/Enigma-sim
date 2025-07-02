@@ -33,7 +33,7 @@ public class Main extends Application {
         // Opplysning av tastetrykk
         scene.setOnKeyPressed(event -> {
             String key = event.getText();
-            if (key.matches("[a-zA-Z]")) {
+            if (key.matches("[a-zA-Z]")) {//skiller ikke mellom store og små bokstaver
                 keyboard.highlightKey(key.charAt(0));
             }
         });
