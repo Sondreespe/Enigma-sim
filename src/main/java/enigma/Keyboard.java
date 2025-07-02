@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import javafx.scene.control.Button;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,31 +14,39 @@ import java.util.Map;
 public class Keyboard {
     private Map<Character, Button> keyMap = new HashMap<>();
 
-    public GridPane createKeyboard() {
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setAlignment(Pos.CENTER);
+    public VBox createKeyboard() { // Vbox for å style tastaturet
+    VBox keyboardVBox = new VBox(20);  // spacing mellom rader, 20 px
+    keyboardVBox.setAlignment(Pos.CENTER);// midtstill tastaturet
 
-        String alphabet = "QWERTYUIOPASDFGHJKLZXCVBNM";
-        for (int i = 0; i < alphabet.length(); i++) {
-            char c = alphabet.charAt(i);
-            Button btn = new Button(Character.toString(c));
-            btn.setPrefWidth(60);
+    String[] rows = { //lager radene på et engelsk tastatur
+        "QWERTYUIOP",
+        "ASDFGHJKL",
+        "ZXCVBNM"
+    };
+
+    for (String row : rows) {
+        HBox rowBox = new HBox(10);  // lager an box for hver radspacing mellom bokstaver
+        rowBox.setAlignment(Pos.CENTER);
+
+        for (char c : row.toCharArray()) {
+            Button btn = new Button(Character.toString(c));// en hver knapp for hver bokstav i hver row
+            btn.setPrefWidth(60);// str på knappen
             btn.setPrefHeight(60);
-            btn.setStyle(
+            btn.setStyle( // styling
                 "-fx-background-radius: 50%; " +
                 "-fx-background-color: lightgray; " +
                 "-fx-border-width: 2px; " +
                 "-fx-font-size: 18px;"
             );
-            keyMap.put(c, btn);
-            int row = i / 9;
-            int col = i % 9;
-            grid.add(btn, col, row);
+            keyMap.put(c, btn);// legger til knappen i keyMap for å kunne referere til den senere
+            rowBox.getChildren().add(btn);// legger til knappen i rowBox
         }
-        return grid;
+        keyboardVBox.getChildren().add(rowBox); // legger alle radene til i parent boxen.
     }
+
+    return keyboardVBox;
+    }
+   
 
     // nytt:
     public void highlightKey(char letter) {
@@ -50,7 +60,7 @@ public class Keyboard {
             );
             // skru av “lyset” etter 300 ms
             new Thread(() -> {
-                try { Thread.sleep(3000); } catch (InterruptedException ignored) {}
+                try { Thread.sleep(500); } catch (InterruptedException ignored) {}
                 javafx.application.Platform.runLater(() -> btn.setStyle(
                     "-fx-background-radius: 50%; " +
                     "-fx-background-color: lightgray; " +

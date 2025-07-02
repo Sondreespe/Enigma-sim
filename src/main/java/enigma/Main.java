@@ -2,27 +2,34 @@ package enigma;
 
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.control.Label;
 import javafx.stage.Stage;
-import javafx.geometry.Pos;
 
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
+        // midtdelen - tastaturet
         Keyboard keyboard = new Keyboard();
-        var kbPane = keyboard.createKeyboard();
+        var keyboardPane = keyboard.createKeyboard();
 
-        // VBox for fleksibilitet
-        VBox vbox = new VBox(kbPane);
-        vbox.setAlignment(Pos.CENTER);
+        // øvre del - rotor panel (placeholder)
+        Label rotorPlaceholder = new Label("Rotorer (kommer senere)");
+        rotorPlaceholder.setStyle("-fx-font-size: 24px; -fx-padding: 20px;");
 
-        StackPane root = new StackPane(vbox);
-        root.setAlignment(Pos.CENTER);
+        // nedre del - plugboard panel (placeholder)
+        Label plugboardPlaceholder = new Label("Plugboard (kommer senere)");
+        plugboardPlaceholder.setStyle("-fx-font-size: 24px; -fx-padding: 20px;");
 
-        Scene scene = new Scene(root, 800, 600);
+        // BorderPane layout
+        BorderPane root = new BorderPane();
+        root.setTop(rotorPlaceholder);
+        root.setCenter(keyboardPane);
+        root.setBottom(plugboardPlaceholder);
 
-        // legg inn tastetrykk
+        Scene scene = new Scene(root, 1000, 800);
+
+        // tastatur-lysstyring
         scene.setOnKeyPressed(event -> {
             String key = event.getText();
             if (key.matches("[a-zA-Z]")) {
@@ -31,7 +38,7 @@ public class Main extends Application {
         });
 
         primaryStage.setScene(scene);
-        primaryStage.setTitle("Enigma UI");
+        primaryStage.setTitle("Enigma Simulator");
         primaryStage.show();
         primaryStage.toFront();
         primaryStage.requestFocus();
