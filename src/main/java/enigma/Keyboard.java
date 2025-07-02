@@ -3,12 +3,10 @@ package enigma;
 import java.util.HashMap;
 import java.util.Map;
 import javafx.scene.control.Button;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.geometry.Pos;
-import java.util.HashMap;
-import java.util.Map;
+
 
 
 public class Keyboard {

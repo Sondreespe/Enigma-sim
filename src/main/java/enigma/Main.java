@@ -1,6 +1,7 @@
 package enigma;
 
 import javafx.application.Application;
+import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.control.Label;
@@ -10,11 +11,11 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
       
-        // øvre del - rotor panel (placeholder)
-        Label rotorPlaceholder = new Label("Rotorer (kommer senere)");
-        rotorPlaceholder.setStyle("-fx-font-size: 24px; -fx-padding: 20px;");
+        // øvre del - rotorene
+        Rotors rotors = new Rotors();
+        var rotor = rotors.createRotors();
 
-         // midtdelen - tastaturet
+        // midtdelen - tastaturet
         Keyboard keyboard = new Keyboard();
         var keyboardPane = keyboard.createKeyboard();
 
@@ -24,9 +25,14 @@ public class Main extends Application {
 
         // BorderPane layout
         BorderPane root = new BorderPane();
-        root.setTop(rotorPlaceholder);
+
+        root.setTop(rotor);
+
         root.setCenter(keyboardPane);
+        BorderPane.setMargin(keyboardPane, new Insets(10, 0, 0, 0));
+
         root.setBottom(plugboardPlaceholder);
+
         root.setStyle("-fx-background-image: url('/enigma/bg1.jpg'); " +
               "-fx-background-size: cover;");
 
