@@ -43,6 +43,7 @@ public class Main extends Application {
             String key = event.getText();
             if (key.matches("[a-zA-Z]")) {//skiller ikke mellom store og små bokstaver
                 keyboard.highlightKey(key.charAt(0));
+                rotors.rotateFirstRotor();// roterer den første rotoren for hvert tastetrykk
             }
         });
 
