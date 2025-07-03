@@ -8,11 +8,12 @@ import javafx.geometry.Pos;
 
 public class Rotors {
     private Label[] rotorLabels = new Label[3];
-    private int rotor1value = 0;
-    private int rotor2value = 0;
-    private int rotor3value = 0;
+    private int rotor1Value = 0;
+    private int rotor2Value = 0;
+    private int rotor3Value = 0;
 
     public HBox createRotors() {
+
         HBox rotorBox = new HBox(40); // avstand mellom rotorene
         rotorBox.setAlignment(Pos.CENTER);
         rotorBox.setStyle("-fx-padding: 60 0 0 0;"  ); // 30px padding på toppen
@@ -51,47 +52,62 @@ public class Rotors {
         return rotorBox;
     }
     
-    // henter ut verdiene fra rotorene i en array
-    public int[] getRotorValues() {
-        int[] values = new int[3];
-        for (int i = 0; i < 3; i++) {
-            values[i] = Integer.parseInt(rotorLabels[i].getText());
-        }
-            return values;
-    }
-
-    public void rotateFirstRotor() {
-        rotateUp(2);
-        int[] values =  getRotorValues();
-        if (values[2] == 25){
-            rotateSecondRotor();
-        }
-        
-    }
-
-    public void rotateSecondRotor(){
-        rotateUp(1);
-        int[] values = getRotorValues();
-        if (values[1] == 25){
-            rotateThirdRotor();
-        }
-    }
-
-    public void rotateThirdRotor() {
-        rotateUp(0);
-    }
-
-
+   
+    
     private void rotateUp(int index) {
-        int current = Integer.parseInt(rotorLabels[index].getText());
-        current = (current + 1) % 26;
-        rotorLabels[index].setText(Integer.toString(current));
+        switch (index) {
+            case 0:
+                rotor1Value = (rotor1Value + 1) % 26;
+                rotorLabels[0].setText(Integer.toString(rotor1Value));
+                break;
+            case 1:
+                rotor2Value = (rotor2Value + 1) % 26;
+                rotorLabels[1].setText(Integer.toString(rotor2Value));
+                break;
+            case 2:
+                rotor3Value = (rotor3Value + 1) % 26;
+                rotorLabels[2].setText(Integer.toString(rotor3Value));
+                break;
+        }
+
+        //sjekk for å se om instansene lagres ordentlig
+        System.out.println(getRotor1Value());
+        System.out.println(getRotor2Value());
+        System.out.println(getRotor3Value());
+        System.out.println("____________");
         
     }
 
     private void rotateDown(int index) {
-        int current = Integer.parseInt(rotorLabels[index].getText());
-        current = (current - 1 + 26) % 26;
-        rotorLabels[index].setText(Integer.toString(current));
+        switch (index) {
+            case 0:
+                rotor1Value = (rotor1Value - 1 + 26) % 26;
+                rotorLabels[0].setText(Integer.toString(rotor1Value));
+                break;
+            case 1:
+                rotor2Value = (rotor2Value - 1 + 26) % 26;
+                rotorLabels[1].setText(Integer.toString(rotor2Value));
+                break;
+            case 2:
+                rotor3Value = (rotor3Value - 1 + 26) % 26;
+                rotorLabels[2].setText(Integer.toString(rotor3Value));
+                break;
+        }
     }
+
+    public int getRotor1Value(){
+        return rotor1Value;
+    }
+
+    public int getRotor2Value(){
+        return rotor2Value;
+    }
+
+    public int getRotor3Value(){
+        return rotor3Value;
+    }   
+
+
+    
+   
 }
