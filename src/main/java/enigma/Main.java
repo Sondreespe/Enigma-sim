@@ -38,7 +38,7 @@ public class Main extends Application {
 
         Scene scene = new Scene(root, 1000, 800); // lager vinduet som blir UI
 
-        // Opplysning av tastetrykk
+        // Opplysning av tastetrykk, bare for å vise at det fungerer. dette endres senere
         scene.setOnKeyPressed(event -> {
             String key = event.getText();
             if (key.matches("[a-zA-Z]")) {//skiller ikke mellom store og små bokstaver
