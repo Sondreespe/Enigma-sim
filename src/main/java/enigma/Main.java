@@ -2,15 +2,17 @@ package enigma;
 
 import javafx.application.Application;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.control.Label;
+import javafx.scene.layout.VBox;
+import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
-      
+
         // øvre del - rotorene
         Rotors rotors = new Rotors();
         var rotor = rotors.createRotors();
@@ -19,36 +21,51 @@ public class Main extends Application {
         Keyboard keyboard = new Keyboard();
         var keyboardPane = keyboard.createKeyboard();
 
-        // nedre del - plugboard panel (placeholder)
-        Label plugboardPlaceholder = new Label("Plugboard (kommer senere)");
-        plugboardPlaceholder.setStyle("-fx-font-size: 24px; -fx-padding: 20px;");
+        // nedre del - pluggboard
+        PlugboardPane plugboardPane = new PlugboardPane();
+        plugboardPane.setPrefHeight(150);
 
-        // BorderPane layout
+        // reset-knapp
+        Button resetButton = new Button("Reset Plugboard");
+        resetButton.setOnAction(e -> {
+            plugboardPane.reset();
+            System.out.println("Plugboard nullstilt.");
+        });
+
+        // pluggboard + reset-knapp i samme panel
+        VBox resetBox = new VBox(resetButton);
+        resetBox.setAlignment(Pos.CENTER);
+
+        VBox plugboardPanel = new VBox(10);
+        plugboardPanel.getChildren().addAll(plugboardPane, resetBox);
+        plugboardPanel.setPadding(new Insets(10));
+        plugboardPanel.setStyle("-fx-background-color: rgba(255,255,255,0.2);");
+
+        // BorderPane
         BorderPane root = new BorderPane();
-
         root.setTop(rotor);
-
         root.setCenter(keyboardPane);
         BorderPane.setMargin(keyboardPane, new Insets(10, 0, 0, 0));
+        root.setBottom(plugboardPanel);
 
-        root.setBottom(plugboardPlaceholder);
+        root.setStyle("-fx-background-image: url('/enigma/bg1.jpg'); -fx-background-size: cover;");
 
-        root.setStyle("-fx-background-image: url('/enigma/bg1.jpg'); " +
-              "-fx-background-size: cover;");
+        Scene scene = new Scene(root, 1000, 800);
 
-        Scene scene = new Scene(root, 1000, 800); // lager vinduet som blir UI
-
-        // Opplysning av tastetrykk, bare for å vise at det fungerer. dette endres senere
+        // tastetrykk
         scene.setOnKeyPressed(event -> {
             String key = event.getText();
-            if (key.matches("[a-zA-Z]")) {//skiller ikke mellom store og små bokstaver
-                keyboard.highlightKey(key.charAt(0));
-                rotors.rotateUp(2); // roterer rotor 1 opp
-               
+            if (key.matches("[a-zA-Z]")) {
+                char letter = key.charAt(0);
+                char substituted = plugboardPane.substitute(letter);
+                keyboard.highlightKey(substituted);
+                rotors.rotateUp(2);
+
+                System.out.println(Character.toUpperCase(letter) + " → Etter pluggboard: " + substituted);
             }
         });
 
-        // spesifikasjoner for vinduet
+        // vindusinnstillinger
         primaryStage.setScene(scene);
         primaryStage.setTitle("Enigma Simulator");
         primaryStage.show();
