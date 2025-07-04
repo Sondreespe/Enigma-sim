@@ -60,7 +60,7 @@ public class Keyboard {
             );
             // skru av “lyset” etter 300 ms
             new Thread(() -> {
-                try { Thread.sleep(500); } catch (InterruptedException ignored) {}
+                try { Thread.sleep(1000); } catch (InterruptedException ignored) {}
                 javafx.application.Platform.runLater(() -> btn.setStyle(
                     "-fx-background-radius: 50%; " +
                     "-fx-background-color: black; " +
@@ -71,4 +71,5 @@ public class Keyboard {
             }).start();
         }
     }
+
 }

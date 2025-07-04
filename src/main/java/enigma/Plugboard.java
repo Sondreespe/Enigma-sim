@@ -6,7 +6,7 @@ import javafx.geometry.Pos;
 import java.util.HashMap;
 import java.util.Map;
 
-public class PlugboardPane extends GridPane {
+public class Plugboard extends GridPane {
 
     private Map<Character, Character> plugMap = new HashMap<>();
     private Button[] buttons = new Button[26];
@@ -14,12 +14,12 @@ public class PlugboardPane extends GridPane {
     private Character firstSelected = null; // instans for første valgte bokstav, enkel mekanisme for å lage par
 
     private final String[] colors = { // 10 farger for 10 mulige par i plugboardet
-            "orange", "cyan", "lightgreen", "plum", "yellow", "lightpink",
-            "lightblue", "gold", "lightcoral", "khaki"
+            "mediumslateblue", "teal", "darkslateblue", "slategrey", "darkslategrey", "steelblue",
+            "silver", "dimgrey", "black", "seagreen"
     };
     private int colorIndex = 0;
 
-    public PlugboardPane() {
+    public Plugboard() {
         setHgap(10);
         setVgap(10);
         setAlignment(Pos.CENTER);

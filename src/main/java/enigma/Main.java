@@ -22,7 +22,7 @@ public class Main extends Application {
         var keyboardPane = keyboard.createKeyboard();
 
         // nedre del - pluggboard
-        PlugboardPane plugboardPane = new PlugboardPane();
+        Plugboard plugboardPane = new Plugboard();
         plugboardPane.setPrefHeight(150);
 
         // reset-knapp
@@ -41,7 +41,7 @@ public class Main extends Application {
         plugboardPanel.setPadding(new Insets(10));
         plugboardPanel.setStyle("-fx-background-color: rgba(255,255,255,0.2);");
 
-        // BorderPane
+        // Layoutet for selve vinduet
         BorderPane root = new BorderPane();
         root.setTop(rotor);
         root.setCenter(keyboardPane);
@@ -56,14 +56,16 @@ public class Main extends Application {
         scene.setOnKeyPressed(event -> {
             String key = event.getText();
             if (key.matches("[a-zA-Z]")) {
-                char letter = key.charAt(0);
-                char substituted = plugboardPane.substitute(letter);
-                keyboard.highlightKey(substituted);
-                rotors.rotateUp(2);
+                char letter = key.charAt(0); // henter tegnet på trykket knapp
+                char substituted = plugboardPane.substitute(letter); // oversetter bokstaven via pluggboardet
+                keyboard.highlightKey(substituted); // highlighter den oversatte bokstaven
+                rotors.rotateUp(2); // roterer den siste rotoren opp for hver tastetrykk
 
                 System.out.println(Character.toUpperCase(letter) + " → Etter pluggboard: " + substituted);
             }
         });
+
+        
 
         // vindusinnstillinger
         primaryStage.setScene(scene);
