@@ -78,33 +78,50 @@ public class Main extends Application {
                 char substituted = plugboardPane.substitute(letter); // oversetter bokstaven via pluggboardet
 
                 // fra bokastav til index, 0-25
-                int index = Character.toUpperCase(substituted) - 'A'; 
+                int indexReflector = Character.toUpperCase(substituted) - 'A'; 
 
                 // fra plugboard, gjennom rotorene
-                index = rotor3Mek.firstRotorPassage(index);
-                index = rotor2Mek.firstRotorPassage(index);
-                index = rotor1Mek.firstRotorPassage(index);
+                int index1pass = rotor3Mek.firstRotorPassage(indexReflector);
+                int index2pass = rotor2Mek.firstRotorPassage(index1pass);
+                int index3pass = rotor1Mek.firstRotorPassage(index2pass);
 
                 // reflektor
-                int reflectedIndex = reflector.reflect(index);
+                int reflectedIndex = reflector.reflect(index3pass);
 
                 // fra reflektor gjennom rotorene igjen
-                index = rotor1Mek.secondRotorPassage(reflectedIndex);
-                index = rotor2Mek.secondRotorPassage(index);
-                index = rotor3Mek.secondRotorPassage(index);
+                int index1rev = rotor1Mek.secondRotorPassage(reflectedIndex);
+                int index2rev = rotor2Mek.secondRotorPassage(index1pass);
+                int index3rev = rotor3Mek.secondRotorPassage(index2rev);
         
               
                 // fra index tilbake til bokstav
-                char encryptedLetter = (char) ('A' + index);
+                char encryptedLetter = (char) ('A' + index3rev); // konverterer index til bokstav
 
                 keyboard.highlightKey(encryptedLetter); // highlighter den oversatte bokstaven
 
-                // roterer rotoren lengst til høyre for hvert tastetrykk
+                // roterer rotoren lengst til høyre for hvert tastetrykk, bare GUI-en
                 rotors.rotateUp(2); 
 
+                //roteringsmekanisme for krypteringen
+                rotor3Mek.step(); // roterer den første rotoren
+                // sjekk om rotor 3 har gått rundt
+                if (rotor3Mek.getPosition() == 0) {
+                    rotor2Mek.step();
+                    rotors.rotateUp(1);
+                }
+                // sjekk om rotor 2 har gått rundt
+                if (rotor2Mek.getPosition() == 0) {
+                rotor1Mek.step();
+                rotors.rotateUp(0);
+                }
+                      
+
                 // samlet oversikt av bosktav flow
-                System.out.println("Original trykk: " + Character.toUpperCase(letter) + " ->  Etter pluggboard: " + substituted + 
-                                    " -> Etter reflektor: " + index);
+                System.out.println("Original trykk: " + Character.toUpperCase(letter) + " ->  Etter pluggboard: " + substituted);
+                System.out.println("Etter 1.rotor: " + index1pass + " -> etter 2.rotor: " + index2pass + " -> etter 3.rotor: " + index3pass);
+                System.out.println("Gjennom reflektor: " + reflectedIndex);
+                System.out.println("Etter 3.rotor: " + reflectedIndex + " -> Etter 2.rotor: " + index2rev + " -> Etter 3.rotor: " + index3rev);
+                System.out.println("Kryptert bokstav: " + encryptedLetter);
 
                 // oversitk over rotorene 
                 System.out.println("Rotor1: " + (rotors.getRotor1Value() ) +
