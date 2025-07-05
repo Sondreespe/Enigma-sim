@@ -56,17 +56,46 @@ public class Main extends Application {
         scene.setOnKeyPressed(event -> {
             String key = event.getText();
             if (key.matches("[a-zA-Z]")) {
+                //faktisk tastetrykk
                 char letter = key.charAt(0); // henter tegnet på trykket knapp
+        
+                // sendes fra plugboard til rotorene
                 char substituted = plugboardPane.substitute(letter); // oversetter bokstaven via pluggboardet
-                keyboard.highlightKey(substituted); // highlighter den oversatte bokstaven
-                rotors.rotateUp(2); // roterer den siste rotoren opp for hver tastetrykk
+                
+                // rotor action fra høyre til venstre
 
-                System.out.println(Character.toUpperCase(letter) + " → Etter pluggboard: " + substituted);
+                // fra rotor inn i reflektor 
+                Reflector reflector = new Reflector();
+                int index = Character.toUpperCase(substituted) - 'A'; // frem og tilbake mellom index og bokstav
+                int reflectedIndex = reflector.reflect(index);
+                char reflectedChar = (char) ('A' + reflectedIndex);
+                // fra reflektor tilbake til rotorene
+
+                // rotor action fra venstre til høyre
+
+                // hva som lyser opp
+                keyboard.highlightKey(reflectedChar); // highlighter den oversatte bokstaven
+
+                // roterer rotoren lengst til høyre for hvert tastetrykk
+                rotors.rotateUp(2); 
+
+                // samlet oversikt av bosktav flow
+                System.out.println("Original trykk: " + Character.toUpperCase(letter) + " ->  Etter pluggboard: " + substituted + 
+                                    " -> Etter reflektor: " + reflectedChar);
+
+                // oversitk over rotorene 
+                System.out.println("Rotor1: " + (rotors.getRotor1Value() ) +
+                " | Rotor2: " + (rotors.getRotor2Value()) +
+                " | Rotor3: " + (rotors.getRotor3Value()));
+
+                System.out.println("Koblinger:");
+                System.out.println(plugboardPane.getPlugMap().toString());
+
+                System.out.println("-------------------------------------------");
             }
         });
 
         
-
         // vindusinnstillinger
         primaryStage.setScene(scene);
         primaryStage.setTitle("Enigma Simulator");

@@ -74,7 +74,7 @@ public class Plugboard extends GridPane {
 
             colorIndex++; // itererer fargeindeksen for neste par
 
-            System.out.println("Koblet " + firstSelected + " ↔ " + letter);
+            //System.out.println("Koblet " + firstSelected + " ↔ " + letter);
 
             // nullstiller førstevalget og er klar for et nytt par
             firstSelected = null;
@@ -112,5 +112,12 @@ public class Plugboard extends GridPane {
         for (Button b : buttons) {
             b.setStyle("");
         }
+    }
+    /**
+     * Geter som henter alle koblingene lagd i plugboardet
+     * @return Map<Character, Character> som inneholder alle koblingene
+     */
+    public Map<Character, Character> getPlugMap() {
+        return plugMap;
     }
 }

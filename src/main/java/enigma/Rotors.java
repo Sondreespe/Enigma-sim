@@ -80,10 +80,6 @@ public class Rotors {
                 rotorLabels[0].setText(Integer.toString(rotor1Value + 1));
                 break;
         }
-        // for kontroll og oversikt 
-        System.out.println("Rotor1: " + (rotor1Value + 1) +
-                " | Rotor2: " + (rotor2Value + 1) +
-                " | Rotor3: " + (rotor3Value + 1));
     }
 
     // roterer ned, grei å ha for å slippe å gå en hel runde dersom man trykker feil. Derfor er den også private.
