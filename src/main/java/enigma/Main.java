@@ -74,37 +74,37 @@ public class Main extends Application {
                 //faktisk tastetrykk
                 char letter = key.charAt(0); // henter tegnet på trykket knapp
         
-                // sendes fra plugboard til rotorene
+                // fra tastetrykk gjennom plugboardet
                 char substituted = plugboardPane.substitute(letter); // oversetter bokstaven via pluggboardet
 
-                // fra tall til index, 0-25
+                // fra bokastav til index, 0-25
                 int index = Character.toUpperCase(substituted) - 'A'; 
 
-                // rotor action fra høyre til venstre
+                // fra plugboard, gjennom rotorene
                 index = rotor3Mek.firstRotorPassage(index);
                 index = rotor2Mek.firstRotorPassage(index);
                 index = rotor1Mek.firstRotorPassage(index);
 
                 // reflektor
+                int reflectedIndex = reflector.reflect(index);
 
-                // fra rotor inn i reflektor 
+                // fra reflektor gjennom rotorene igjen
+                index = rotor1Mek.secondRotorPassage(reflectedIndex);
+                index = rotor2Mek.secondRotorPassage(index);
+                index = rotor3Mek.secondRotorPassage(index);
         
               
-                int reflectedIndex = reflector.reflect(index);
-                char reflectedChar = (char) ('A' + reflectedIndex);
-                // fra reflektor tilbake til rotorene
+                // fra index tilbake til bokstav
+                char encryptedLetter = (char) ('A' + index);
 
-                // rotor action fra venstre til høyre
-
-                // hva som lyser opp
-                keyboard.highlightKey(reflectedChar); // highlighter den oversatte bokstaven
+                keyboard.highlightKey(encryptedLetter); // highlighter den oversatte bokstaven
 
                 // roterer rotoren lengst til høyre for hvert tastetrykk
                 rotors.rotateUp(2); 
 
                 // samlet oversikt av bosktav flow
                 System.out.println("Original trykk: " + Character.toUpperCase(letter) + " ->  Etter pluggboard: " + substituted + 
-                                    " -> Etter reflektor: " + reflectedChar);
+                                    " -> Etter reflektor: " + index);
 
                 // oversitk over rotorene 
                 System.out.println("Rotor1: " + (rotors.getRotor1Value() ) +
