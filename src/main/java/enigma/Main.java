@@ -97,9 +97,11 @@ public class Main extends Application {
 
                 // til bokstav
                 char enc = (char) ('A' + b3);
+                
+                char substitutedBack = plugboardPane.substitute(enc);
 
                 // highlight
-                keyboard.highlightKey(enc);
+                keyboard.highlightKey(substitutedBack);
 
                 // steg rotorene (GUI + crypto)
                 handleRotorStepping(cryptoRotor1, cryptoRotor2, cryptoRotor3,
@@ -124,7 +126,8 @@ public class Main extends Application {
                 System.out.println("Rotor 3 tilbake: " + b2 + " → " + b3);
 
                 // Resultat
-                System.out.println("Resultatbokstav: " + enc);
+                System.out.println("Etter plugboard tilbake: " + enc + " → " + substitutedBack);
+                System.out.println("Resultatbokstav: " + substitutedBack);
                 System.out.println("Rotorposisjonene:");
                 System.out.println("  Rotor1: " + (guiRotor1.getPos()+1));
                 System.out.println("  Rotor2: " + (guiRotor2.getPos()+1));
