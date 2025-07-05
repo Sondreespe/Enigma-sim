@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.geometry.Pos;
 
-public class Rotors {
+public class Rotors implements Rotor {
     private Label[] rotorLabels = new Label[3];
 
     // intansen med veridene til rotorene
@@ -129,5 +129,29 @@ public class Rotors {
         if(index >= 0 && index <3){
             rotorLabels[index].setText(Integer.toString(position + 1)); // vis 1–26
         }
+    }
+
+    @Override
+    public void stepUp(int rotorIndex) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'stepUp'");
+    }
+
+    @Override
+    public void stepDown(int rotorIndex) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'stepDown'");
+    }
+
+    @Override
+    public void setRotorValue(int index, int positiom) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setRotorValue'");
+    }
+
+    @Override
+    public int getRotorValue(int indexRotor) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getRotorValue'");
     }
 }

@@ -1,6 +1,6 @@
 package enigma;
 
-public class CryptoRotor {
+public class CryptoRotor implements Rotor {
     // møsntrenene til rotorene
     public static final int[] ROTOR_I = {
         4, 10, 12, 5, 11, 6, 3, 16, 21, 25,
@@ -25,7 +25,7 @@ public class CryptoRotor {
     private int postition; // den gjeldene posisjonen til rotoren
 
 
-    public CryptoRotor(int[] wiring, int startPostition) {
+    public CryptoRotor (int[] wiring, int startPostition) {
         this.wiring = wiring.clone(); // for å unngå permutasjon av originale mønsteret
         this.inverseWiring = new int[26]; // oppretter tomt int array for inversen
         this.postition = startPostition % 26; // unngår verdier utenfor 0-25
@@ -80,5 +80,29 @@ public class CryptoRotor {
      */
     public void setPosition(int position) {
         this.postition = position % 26; // setter posisjonen, unngår verdier utenfor 0-25
+    }
+
+    @Override
+    public void stepUp(int rotorIndex) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'stepUp'");
+    }
+
+    @Override
+    public void stepDown(int rotorIndex) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'stepDown'");
+    }
+
+    @Override
+    public void setRotorValue(int index, int positiom) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'setRotorValue'");
+    }
+
+    @Override
+    public int getRotorValue(int indexRotor) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getRotorValue'");
     }
 }
