@@ -32,6 +32,15 @@ public class Main extends Application {
             System.out.println("Plugboard nullstilt.");
         });
 
+        //reflektor
+        Reflector reflector = new Reflector();
+
+        // kryptering mekanismen
+        CryptoRotor rotor1Mek = new CryptoRotor(CryptoRotor.ROTOR_I, 0);
+        CryptoRotor rotor2Mek = new CryptoRotor(CryptoRotor.ROTOR_I, 0);
+        CryptoRotor rotor3Mek = new CryptoRotor(CryptoRotor.ROTOR_I, 0);
+
+
         // pluggboard + reset-knapp i samme panel
         VBox resetBox = new VBox(resetButton);
         resetBox.setAlignment(Pos.CENTER);
@@ -41,32 +50,46 @@ public class Main extends Application {
         plugboardPanel.setPadding(new Insets(10));
         plugboardPanel.setStyle("-fx-background-color: rgba(255,255,255,0.2);");
 
-        // Layoutet for selve vinduet
+        // Layoutet for selve vinduet-----------------------------------------------
         BorderPane root = new BorderPane();
+
         root.setTop(rotor);
+
         root.setCenter(keyboardPane);
         BorderPane.setMargin(keyboardPane, new Insets(10, 0, 0, 0));
+
         root.setBottom(plugboardPanel);
 
         root.setStyle("-fx-background-image: url('/enigma/bg1.jpg'); -fx-background-size: cover;");
 
         Scene scene = new Scene(root, 1000, 800);
 
-        // tastetrykk
+        //-----------------------------------------------------------------------------
+
+        //Selve mekanismen i prosjektet : tastetrykk
         scene.setOnKeyPressed(event -> {
             String key = event.getText();
             if (key.matches("[a-zA-Z]")) {
+
                 //faktisk tastetrykk
                 char letter = key.charAt(0); // henter tegnet på trykket knapp
         
                 // sendes fra plugboard til rotorene
                 char substituted = plugboardPane.substitute(letter); // oversetter bokstaven via pluggboardet
-                
+
+                // fra tall til index, 0-25
+                int index = Character.toUpperCase(substituted) - 'A'; 
+
                 // rotor action fra høyre til venstre
+                index = rotor3Mek.firstRotorPassage(index);
+                index = rotor2Mek.firstRotorPassage(index);
+                index = rotor1Mek.firstRotorPassage(index);
+
+                // reflektor
 
                 // fra rotor inn i reflektor 
-                Reflector reflector = new Reflector();
-                int index = Character.toUpperCase(substituted) - 'A'; // frem og tilbake mellom index og bokstav
+        
+              
                 int reflectedIndex = reflector.reflect(index);
                 char reflectedChar = (char) ('A' + reflectedIndex);
                 // fra reflektor tilbake til rotorene
