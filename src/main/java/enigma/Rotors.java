@@ -105,15 +105,35 @@ public class Rotors {
     }
 
     // getters for enkel tilgang
+
+    /**
+     * henter verdien til rotor 1
+     * @return verdien til rotor 1, 1-26
+     */
     public int getRotor1Value() {
         return rotor1Value + 1; // 1–26
     }
 
+    /**
+     * henter verdien til rotor 2
+     * @return verdien til rotor 2, 1-26
+     */
     public int getRotor2Value() {
         return rotor2Value + 1;
     }
-
+    /**
+     * henter verdien til rotor 3
+     * @return verdien til rotor 3, 1-26
+     */
     public int getRotor3Value() {
         return rotor3Value + 1;
+    }
+
+    /**
+     * sender verien til den siste rotoren 
+     * @return
+     */
+    public int reflector(){
+        return getRotor1Value();
     }
 }
