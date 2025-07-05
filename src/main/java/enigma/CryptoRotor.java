@@ -40,14 +40,25 @@ public class CryptoRotor {
         return (mapped - postition + 26) % 26; // 
     }
 
+    /**
+     * Roterer rotorens posisjon en plass. Dette er for krypteringen og ikke GUI-en.
+     */
     public void step(){
         postition = (postition + 1) % 26; // roterer rotoren en plass
     }
 
-    public int  getPosition() {
+    /**
+     * Henter den gjeldene posisjonenn til rotoren
+     * @return indeksen til den gjeldene posisjonen, 0-25
+     */
+    public int getPosition() {
         return postition; // henter gjeldene posisjon
     }
 
+    /**
+     * Setter posisjonen til rotoren. Kan være den ikke trengs, men kanskje mtp reset osv
+     * @param position
+     */
     public void setPosition(int position) {
         this.postition = position % 26; // setter posisjonen, unngår verdier utenfor 0-25
     }
