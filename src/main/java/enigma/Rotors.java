@@ -125,11 +125,9 @@ public class Rotors {
         return rotor3Value + 1;
     }
 
-    /**
-     * sender verien til den siste rotoren 
-     * @return
-     */
-    public int reflector(){
-        return getRotor1Value();
+    public void setRotor( int index, int position){
+        if(index >= 0 && index <3){
+            rotorLabels[index].setText(Integer.toString(position + 1)); // vis 1–26
+        }
     }
 }

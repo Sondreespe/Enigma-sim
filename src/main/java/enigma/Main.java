@@ -90,7 +90,7 @@ public class Main extends Application {
 
                 // fra reflektor gjennom rotorene igjen
                 int index1rev = rotor1Mek.secondRotorPassage(reflectedIndex);
-                int index2rev = rotor2Mek.secondRotorPassage(index1pass);
+                int index2rev = rotor2Mek.secondRotorPassage(index1rev);
                 int index3rev = rotor3Mek.secondRotorPassage(index2rev);
         
               
@@ -99,22 +99,26 @@ public class Main extends Application {
 
                 keyboard.highlightKey(encryptedLetter); // highlighter den oversatte bokstaven
 
-                // roterer rotoren lengst til høyre for hvert tastetrykk, bare GUI-en
-                rotors.rotateUp(2); 
+                // roterer rotoren lengst til høyre for hvert tastetrykk
+                // lagre posisjon før stepping
+                int prevRotor3Pos = rotor3Mek.getPosition();
+                int prevRotor2Pos = rotor2Mek.getPosition();
 
-                //roteringsmekanisme for krypteringen
-                rotor3Mek.step(); // roterer den første rotoren
-                // sjekk om rotor 3 har gått rundt
-                if (rotor3Mek.getPosition() == 0) {
+                // steg rotor 3
+                // steg rotor 3
+                rotor3Mek.step();
+                rotors.setRotor(2, rotor3Mek.getPosition());
+
+                // sjekk stepping
+                if (prevRotor3Pos == 25) {
                     rotor2Mek.step();
-                    rotors.rotateUp(1);
-                }
-                // sjekk om rotor 2 har gått rundt
-                if (rotor2Mek.getPosition() == 0) {
-                rotor1Mek.step();
-                rotors.rotateUp(0);
-                }
-                      
+                    rotors.setRotor(1, rotor2Mek.getPosition());
+
+                    if (prevRotor2Pos == 25) {
+                        rotor1Mek.step();
+                        rotors.setRotor(0, rotor1Mek.getPosition());
+                    }
+            }
 
                 // samlet oversikt av bosktav flow
                 System.out.println("Original trykk: " + Character.toUpperCase(letter) + " ->  Etter pluggboard: " + substituted);
@@ -124,9 +128,12 @@ public class Main extends Application {
                 System.out.println("Kryptert bokstav: " + encryptedLetter);
 
                 // oversitk over rotorene 
-                System.out.println("Rotor1: " + (rotors.getRotor1Value() ) +
+                System.out.println("GUI: Rotor1: " + (rotors.getRotor1Value() ) +
                 " | Rotor2: " + (rotors.getRotor2Value()) +
                 " | Rotor3: " + (rotors.getRotor3Value()));
+
+                System.out.println("Krypterings: Rotor1: " + (rotor1Mek.getPosition() + 1) + " || rotor2: " + (rotor2Mek.getPosition() + 1) +
+                " || Rotor3: " + rotor3Mek.getPosition());
 
                 System.out.println("Koblinger:");
                 System.out.println(plugboardPane.getPlugMap().toString());
