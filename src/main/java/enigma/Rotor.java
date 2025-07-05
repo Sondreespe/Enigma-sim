@@ -5,17 +5,17 @@ public interface Rotor {
     /**
      * Roterer opp rotoren angitt ved index.
      */
-    public void stepUp(int rotorIndex);
+    public void stepUp();
 
     /**
      * Roterer ned rotoren angitt ved index.
      */
-    public void stepDown(int rotorIndex);
+    public void stepDown();
 
     /**
      * Henter verdien til rotoren angitt ved index.
      */
-    public void setRotorValue(int index, int positiom);
+    public void setPos(int pos);
 
     /**
      * gets the value of the rotor with the given index.
@@ -23,5 +23,7 @@ public interface Rotor {
      * @param indexRotor
      * @return
      */
-    public int getRotorValue(int indexRotor);
+    public int getPos();
+
+    public void reset();
 }

@@ -1,7 +1,7 @@
 package enigma;
 
 public class CryptoRotor implements Rotor {
-    // møsntrenene til rotorene
+    // Mønstrene til rotorene
     public static final int[] ROTOR_I = {
         4, 10, 12, 5, 11, 6, 3, 16, 21, 25,
         13, 19, 14, 22, 24, 7, 23, 20, 18, 15,
@@ -20,89 +20,60 @@ public class CryptoRotor implements Rotor {
         10, 12, 20, 18, 16, 14
     };
 
-    private final int[] wiring; // det aktive mønsteret, dette er for første passering gjennom rotorene
-    private final int[] inverseWiring; // den inverse av mønsteret over, dette er for andre passering gjennom rotorene
-    private int postition; // den gjeldene posisjonen til rotoren
+    private final int[] wiring;        // aktiv wiring
+    private final int[] inverseWiring; // invers wiring
+    private int position;              // rotorens posisjon 0–25
 
+    public CryptoRotor(int[] wiring, int startPosition) {
+        this.wiring = wiring.clone();
+        this.inverseWiring = new int[26];
+        this.position = startPosition % 26;
 
-    public CryptoRotor (int[] wiring, int startPostition) {
-        this.wiring = wiring.clone(); // for å unngå permutasjon av originale mønsteret
-        this.inverseWiring = new int[26]; // oppretter tomt int array for inversen
-        this.postition = startPostition % 26; // unngår verdier utenfor 0-25
-
-        for(int i = 0; i < 26; i++){
-            inverseWiring[wiring[i]] = i; // fyller inn den inverse koblingen
+        for (int i = 0; i < 26; i++) {
+            inverseWiring[wiring[i]] = i;
         }
     }
 
     /**
-     * Denne funksjonen gjelder for den første passeringen mellom rotorene. !VIKTIG ! gjelder bare for en enkel rotor
-     * Koder en bokstav ved å sende den gjennom rotoren og kobler den opp til en annen bokstav ved hjelp av wiring
-     * @param inputIndex
-     * @return indeksen til den kodede bokstaven
+     * Første passering (tastatur → reflektor)
      */
-    public int firstRotorPassage(int inputIndex){
-        int shifted = (inputIndex + postition) % 26; // 
-        int mapped = wiring[shifted]; //
-        return (mapped - postition + 26) % 26; // 
-    }      
-
-    /**
-     * Denne funksjonen gjelder for den andre passeringen mellom rotorene. !VIKTIG ! gjelder bare for en enkel rotor
-     * Koder en bokstav ved å sende den gjennom rotoren og kobler den opp til en annen bokstav ved hjelp av inverseWiring 
-     * @param inputIndex
-     * @return indeksen til den kodede bokstavem
-     */
-    public int secondRotorPassage(int inputIndex){
-        int shifted = (inputIndex + postition) % 26; // 
-        int mapped = inverseWiring[shifted]; // 
-        return (mapped - postition + 26) % 26; // 
+    public int firstRotorPassage(int inputIndex) {
+        int shifted = (inputIndex + position) % 26;
+        int mapped = wiring[shifted];
+        return (mapped - position + 26) % 26;
     }
 
     /**
-     * Roterer rotorens posisjon en plass. Dette er for krypteringen og ikke GUI-en.
+     * Andre passering (reflektor → tastatur)
      */
-    public void step(){
-        postition = (postition + 1) % 26; // roterer rotoren en plass
-    }
-
-    /**
-     * Henter den gjeldene posisjonenn til rotoren
-     * @return indeksen til den gjeldene posisjonen, 0-25
-     */
-    public int getPosition() {
-        return postition; // henter gjeldene posisjon
-    }
-
-    /**
-     * Setter posisjonen til rotoren. Kan være den ikke trengs, men kanskje mtp reset osv
-     * @param position
-     */
-    public void setPosition(int position) {
-        this.postition = position % 26; // setter posisjonen, unngår verdier utenfor 0-25
+    public int secondRotorPassage(int inputIndex) {
+        int shifted = (inputIndex + position) % 26;
+        int mapped = inverseWiring[shifted];
+        return (mapped - position + 26) % 26;
     }
 
     @Override
-    public void stepUp(int rotorIndex) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'stepUp'");
+    public void stepUp() {
+        position = (position + 1) % 26;
     }
 
     @Override
-    public void stepDown(int rotorIndex) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'stepDown'");
+    public void stepDown() {
+        position = (position - 1 + 26) % 26;
     }
 
     @Override
-    public void setRotorValue(int index, int positiom) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'setRotorValue'");
+    public void setPos(int pos) {
+        position = pos % 26;
     }
 
     @Override
-    public int getRotorValue(int indexRotor) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getRotorValue'");
+    public int getPos() {
+        return position;
+    }
+
+    @Override
+    public void reset() {
+        setPos(0);
     }
 }

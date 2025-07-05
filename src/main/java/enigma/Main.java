@@ -5,6 +5,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.control.Button;
 import javafx.stage.Stage;
@@ -13,15 +14,20 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        // øvre del - rotorene
-        Rotors rotors = new Rotors();
-        var rotor = rotors.createRotors();
+        // === GUI-rotorer ===
+        GUIRotor guiRotor1 = new GUIRotor();
+        GUIRotor guiRotor2 = new GUIRotor();
+        GUIRotor guiRotor3 = new GUIRotor();
 
-        // midtdelen - tastaturet
+        HBox rotorBox = new HBox(40, guiRotor1.getView(), guiRotor2.getView(), guiRotor3.getView());
+        rotorBox.setAlignment(Pos.CENTER);
+        rotorBox.setStyle("-fx-padding: 60 0 0 0;");
+
+        // === Tastatur ===
         Keyboard keyboard = new Keyboard();
         var keyboardPane = keyboard.createKeyboard();
 
-        // nedre del - pluggboard
+        // === Plugboard ===
         Plugboard plugboardPane = new Plugboard();
         plugboardPane.setPrefHeight(150);
 
@@ -30,120 +36,105 @@ public class Main extends Application {
         resetButton.setOnAction(e -> {
             plugboardPane.reset();
             System.out.println("Plugboard nullstilt.");
+            guiRotor1.reset();
+            guiRotor2.reset();
+            guiRotor3.reset();
         });
 
-        //reflektor
+        // === Reflektor ===
         Reflector reflector = new Reflector();
 
-        // kryptering mekanismen
-        CryptoRotor rotor1Mek = new CryptoRotor(CryptoRotor.ROTOR_I, 0);
-        CryptoRotor rotor2Mek = new CryptoRotor(CryptoRotor.ROTOR_I, 0);
-        CryptoRotor rotor3Mek = new CryptoRotor(CryptoRotor.ROTOR_I, 0);
+        // === Crypto-rotorer ===
+        CryptoRotor cryptoRotor1 = new CryptoRotor(CryptoRotor.ROTOR_I, 0);
+        CryptoRotor cryptoRotor2 = new CryptoRotor(CryptoRotor.ROTOR_II, 0);
+        CryptoRotor cryptoRotor3 = new CryptoRotor(CryptoRotor.ROTOR_III, 0);
 
-
-        // pluggboard + reset-knapp i samme panel
-        VBox resetBox = new VBox(resetButton);
-        resetBox.setAlignment(Pos.CENTER);
-
-        VBox plugboardPanel = new VBox(10);
-        plugboardPanel.getChildren().addAll(plugboardPane, resetBox);
+        // === pluggboard + reset-knapp ===
+        VBox plugboardPanel = new VBox(10, plugboardPane, resetButton);
+        plugboardPanel.setAlignment(Pos.CENTER);
         plugboardPanel.setPadding(new Insets(10));
         plugboardPanel.setStyle("-fx-background-color: rgba(255,255,255,0.2);");
 
-        // Layoutet for selve vinduet-----------------------------------------------
+        // === Layout ===
         BorderPane root = new BorderPane();
-
-        root.setTop(rotor);
-
+        root.setTop(rotorBox);
         root.setCenter(keyboardPane);
         BorderPane.setMargin(keyboardPane, new Insets(10, 0, 0, 0));
-
         root.setBottom(plugboardPanel);
-
         root.setStyle("-fx-background-image: url('/enigma/bg1.jpg'); -fx-background-size: cover;");
 
         Scene scene = new Scene(root, 1000, 800);
 
-        //-----------------------------------------------------------------------------
+        // === koble GUI-rotor til crypto-rotor ===
+        guiRotor1.setOnPositionChanged(() -> cryptoRotor1.setPos(guiRotor1.getPos()));
+        guiRotor2.setOnPositionChanged(() -> cryptoRotor2.setPos(guiRotor2.getPos()));
+        guiRotor3.setOnPositionChanged(() -> cryptoRotor3.setPos(guiRotor3.getPos()));
 
-        //Selve mekanismen i prosjektet : tastetrykk
+        // === tastetrykk-håndtering ===
         scene.setOnKeyPressed(event -> {
             String key = event.getText();
             if (key.matches("[a-zA-Z]")) {
+                char letter = key.charAt(0);
 
-                //faktisk tastetrykk
-                char letter = key.charAt(0); // henter tegnet på trykket knapp
-        
-                // fra tastetrykk gjennom plugboardet
-                char substituted = plugboardPane.substitute(letter); // oversetter bokstaven via pluggboardet
+                // gjennom plugboard
+                char substituted = plugboardPane.substitute(letter);
 
-                // fra bokastav til index, 0-25
-                int indexReflector = Character.toUpperCase(substituted) - 'A'; 
+                // til index 0–25
+                int idx = Character.toUpperCase(substituted) - 'A';
 
-                // fra plugboard, gjennom rotorene
-                int index1pass = rotor3Mek.firstRotorPassage(indexReflector);
-                int index2pass = rotor2Mek.firstRotorPassage(index1pass);
-                int index3pass = rotor1Mek.firstRotorPassage(index2pass);
+                // gjennom rotorene
+                int p1 = cryptoRotor3.firstRotorPassage(idx);
+                int p2 = cryptoRotor2.firstRotorPassage(p1);
+                int p3 = cryptoRotor1.firstRotorPassage(p2);
 
                 // reflektor
-                int reflectedIndex = reflector.reflect(index3pass);
+                int reflected = reflector.reflect(p3);
 
-                // fra reflektor gjennom rotorene igjen
-                int index1rev = rotor1Mek.secondRotorPassage(reflectedIndex);
-                int index2rev = rotor2Mek.secondRotorPassage(index1rev);
-                int index3rev = rotor3Mek.secondRotorPassage(index2rev);
-        
-              
-                // fra index tilbake til bokstav
-                char encryptedLetter = (char) ('A' + index3rev); // konverterer index til bokstav
+                // tilbake gjennom rotorene
+                int b1 = cryptoRotor1.secondRotorPassage(reflected);
+                int b2 = cryptoRotor2.secondRotorPassage(b1);
+                int b3 = cryptoRotor3.secondRotorPassage(b2);
 
-                keyboard.highlightKey(encryptedLetter); // highlighter den oversatte bokstaven
+                // til bokstav
+                char enc = (char) ('A' + b3);
 
-                // roterer rotoren lengst til høyre for hvert tastetrykk
-                // lagre posisjon før stepping
-                int prevRotor3Pos = rotor3Mek.getPosition();
-                int prevRotor2Pos = rotor2Mek.getPosition();
+                // highlight
+                keyboard.highlightKey(enc);
 
-                // steg rotor 3
-                // steg rotor 3
-                rotor3Mek.step();
-                rotors.setRotor(2, rotor3Mek.getPosition());
+                // steg rotorene (GUI + crypto)
+                handleRotorStepping(cryptoRotor1, cryptoRotor2, cryptoRotor3,
+                                    guiRotor1, guiRotor2, guiRotor3);
 
-                // sjekk stepping
-                if (prevRotor3Pos == 25) {
-                    rotor2Mek.step();
-                    rotors.setRotor(1, rotor2Mek.getPosition());
+                // log
+                System.out.println("=== Enigma Flow ===");
+                System.out.println("Trykket: " + Character.toUpperCase(letter));
+                System.out.println("Etter plugboard: " + substituted);
 
-                    if (prevRotor2Pos == 25) {
-                        rotor1Mek.step();
-                        rotors.setRotor(0, rotor1Mek.getPosition());
-                    }
-            }
+                // Første vei gjennom rotorene
+                System.out.println("Rotor 3 frem: " + idx + " → " + p1);
+                System.out.println("Rotor 2 frem: " + p1 + " → " + p2);
+                System.out.println("Rotor 1 frem: " + p2 + " → " + p3);
 
-                // samlet oversikt av bosktav flow
-                System.out.println("Original trykk: " + Character.toUpperCase(letter) + " ->  Etter pluggboard: " + substituted);
-                System.out.println("Etter 1.rotor: " + index1pass + " -> etter 2.rotor: " + index2pass + " -> etter 3.rotor: " + index3pass);
-                System.out.println("Gjennom reflektor: " + reflectedIndex);
-                System.out.println("Etter 3.rotor: " + reflectedIndex + " -> Etter 2.rotor: " + index2rev + " -> Etter 3.rotor: " + index3rev);
-                System.out.println("Kryptert bokstav: " + encryptedLetter);
+                // Reflektor
+                System.out.println("Reflektor: " + p3 + " → " + reflected);
 
-                // oversitk over rotorene 
-                System.out.println("GUI: Rotor1: " + (rotors.getRotor1Value() ) +
-                " | Rotor2: " + (rotors.getRotor2Value()) +
-                " | Rotor3: " + (rotors.getRotor3Value()));
+                // Retur gjennom rotorene
+                System.out.println("Rotor 1 tilbake: " + reflected + " → " + b1);
+                System.out.println("Rotor 2 tilbake: " + b1 + " → " + b2);
+                System.out.println("Rotor 3 tilbake: " + b2 + " → " + b3);
 
-                System.out.println("Krypterings: Rotor1: " + (rotor1Mek.getPosition() + 1) + " || rotor2: " + (rotor2Mek.getPosition() + 1) +
-                " || Rotor3: " + rotor3Mek.getPosition());
-
-                System.out.println("Koblinger:");
-                System.out.println(plugboardPane.getPlugMap().toString());
-
-                System.out.println("-------------------------------------------");
+                // Resultat
+                System.out.println("Resultatbokstav: " + enc);
+                System.out.println("Rotorposisjonene:");
+                System.out.println("  Rotor1: " + (guiRotor1.getPos()+1));
+                System.out.println("  Rotor2: " + (guiRotor2.getPos()+1));
+                System.out.println("  Rotor3: " + (guiRotor3.getPos()+1));
+                System.out.println("Plugboard-mapping: " + plugboardPane.getPlugMap());
+                System.out.println("=========================");
             }
         });
 
-        
-        // vindusinnstillinger
+        // === vindu ===
         primaryStage.setScene(scene);
         primaryStage.setTitle("Enigma Simulator");
         primaryStage.show();
@@ -151,6 +142,29 @@ public class Main extends Application {
         primaryStage.requestFocus();
         primaryStage.setFullScreen(true);
         primaryStage.setFullScreenExitHint("");
+    }
+
+    /**
+     * Stepping-metoden som sikrer korrekt Enigma-logikk.
+     * Kun aktivert for tastetrykk, ikke for knappene på GUI.
+     */
+    private void handleRotorStepping(CryptoRotor rotor1, CryptoRotor rotor2, CryptoRotor rotor3,
+                                     GUIRotor gui1, GUIRotor gui2, GUIRotor gui3) {
+        int prev3 = rotor3.getPos();
+
+        rotor3.stepUp();
+        gui3.setPos(rotor3.getPos());
+
+        if (prev3 == 25) {
+            int prev2 = rotor2.getPos();
+            rotor2.stepUp();
+            gui2.setPos(rotor2.getPos());
+
+            if (prev2 == 25) {
+                rotor1.stepUp();
+                gui1.setPos(rotor1.getPos());
+            }
+        }
     }
 
     public static void main(String[] args) {
