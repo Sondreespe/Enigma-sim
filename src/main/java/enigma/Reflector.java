@@ -3,7 +3,7 @@ package enigma;
 public class Reflector {
     
     // konstant "wiring" som sender signalet tilbake gjennom rotorene. 
-    // f.eks det kommer ut verdi 2 ut av rotorene, da vil reflektoren sende det tilbake som 20.
+    // viktig element er at den er symmetrisk, slik at A blir til Z og Z blir til A. Dette er viktig for dekryptering
     private int[] wiring = {
         24, 17, 20, 7, 16, 18, 11, 3,
         15, 23, 13, 6, 14, 10, 12, 8, 
