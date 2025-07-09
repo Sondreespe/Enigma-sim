@@ -12,6 +12,7 @@ public class GUIRotor implements IRotor {
     private final VBox rotorBox;
     private Runnable onPositionChanged; // callback
 
+    //Oppretter GUIRotor med en label og knapper for opp og ned
     public GUIRotor() {
         rotorLabel = new Label();
         rotorLabel.setStyle(

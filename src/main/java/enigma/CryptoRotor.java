@@ -24,6 +24,7 @@ public class CryptoRotor implements IRotor {
     private final int[] inverseWiring; // invers wiring
     private int position;              // rotorens posisjon 0–25
 
+    //lager en rotor med en gitt wiring og startposisjon
     public CryptoRotor(int[] wiring, int startPosition) {
         this.wiring = wiring.clone();
         this.inverseWiring = new int[26];
@@ -35,7 +36,7 @@ public class CryptoRotor implements IRotor {
     }
 
     /**
-     * Første passering (tastatur → reflektor)
+     * Første passering (tastatur til reflektor)
      */
     public int firstRotorPassage(int inputIndex) {
         int shifted = (inputIndex + position) % 26;
@@ -44,7 +45,8 @@ public class CryptoRotor implements IRotor {
     }
 
     /**
-     * Andre passering (reflektor → tastatur)
+     * Andre passering (reflektor til tastatur)
+     * Bruker inverse wiring for å gå tilbake gjennom rotoren.
      */
     public int secondRotorPassage(int inputIndex) {
         int shifted = (inputIndex + position) % 26;

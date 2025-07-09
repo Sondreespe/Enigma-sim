@@ -3,27 +3,28 @@ package enigma;
 public interface IRotor {
 
     /**
-     * Roterer opp rotoren angitt ved index.
+     * Roterer rotoren et hakk opp.
      */
     public void stepUp();
 
     /**
-     * Roterer ned rotoren angitt ved index.
+     * Roterer rotoren et hakk ned.
      */
     public void stepDown();
 
     /**
-     * Henter verdien til rotoren angitt ved index.
+     * Setter posisjonen til rotoren.
      */
     public void setPos(int pos);
 
     /**
-     * gets the value of the rotor with the given index.
-     * index 0 is rotor 1, index 1 is rotor 2, index 2 is rotor 3.
-     * @param indexRotor
-     * @return
+     * Henter posisjonen til rotoren.
+     * @return the index of the rotor's position (0-25)
      */
     public int getPos();
 
+    /***
+     * Nullstiller rotoren til posisjon 0.
+     */
     public void reset();
 }
