@@ -1,6 +1,6 @@
 package enigma;
 
-public class CryptoRotor implements Rotor {
+public class CryptoRotor implements IRotor {
     // Mønstrene til rotorene
     public static final int[] ROTOR_I = {
         4, 10, 12, 5, 11, 6, 3, 16, 21, 25,

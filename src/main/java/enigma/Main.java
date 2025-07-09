@@ -14,48 +14,49 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) {
 
-        // === GUI-rotorer ===
+        //GUI-rotorer, animasjon og interaksjon
         GUIRotor guiRotor1 = new GUIRotor();
         GUIRotor guiRotor2 = new GUIRotor();
         GUIRotor guiRotor3 = new GUIRotor();
 
+        // Visning rotorer i en horisontal boks
         HBox rotorBox = new HBox(40, guiRotor1.getView(), guiRotor2.getView(), guiRotor3.getView());
         rotorBox.setAlignment(Pos.CENTER);
         rotorBox.setStyle("-fx-padding: 60 0 0 0;");
 
-        // === Tastatur ===
+        // Tastaturet som brukes i GUI-en
         Keyboard keyboard = new Keyboard();
         var keyboardPane = keyboard.createKeyboard();
 
-        // === Plugboard ===
+        // Pluggboard panelet
         Plugboard plugboardPane = new Plugboard();
         plugboardPane.setPrefHeight(150);
 
         // reset-knapp
-        Button resetButton = new Button("Reset Plugboard");
+        Button resetButton = new Button("Reset hele Enigma-maskinen");
         resetButton.setOnAction(e -> {
             plugboardPane.reset();
-            System.out.println("Plugboard nullstilt.");
+            System.out.println("Enigma-maskinen nullstilt.");
             guiRotor1.reset();
             guiRotor2.reset();
             guiRotor3.reset();
         });
 
-        // === Reflektor ===
+        // Reflektor 
         Reflector reflector = new Reflector();
 
-        // === Crypto-rotorer ===
+        //Crypto-rotorer, rotorene som brukes til kryptering og ikke visning
         CryptoRotor cryptoRotor1 = new CryptoRotor(CryptoRotor.ROTOR_I, 0);
         CryptoRotor cryptoRotor2 = new CryptoRotor(CryptoRotor.ROTOR_II, 0);
         CryptoRotor cryptoRotor3 = new CryptoRotor(CryptoRotor.ROTOR_III, 0);
 
-        // === pluggboard + reset-knapp ===
+        // Visning av plugboard-panelet med reset-knapp
         VBox plugboardPanel = new VBox(10, plugboardPane, resetButton);
         plugboardPanel.setAlignment(Pos.CENTER);
         plugboardPanel.setPadding(new Insets(10));
         plugboardPanel.setStyle("-fx-background-color: rgba(255,255,255,0.2);");
 
-        // === Layout ===
+        //  Layout  med Pane
         BorderPane root = new BorderPane();
         root.setTop(rotorBox);
         root.setCenter(keyboardPane);
@@ -65,21 +66,23 @@ public class Main extends Application {
 
         Scene scene = new Scene(root, 1000, 800);
 
-        // === koble GUI-rotor til crypto-rotor ===
+        // koble GUI-rotor til crypto-rotor , slik at endringer i GUI-en reflekteres i krypteringslogikken
         guiRotor1.setOnPositionChanged(() -> cryptoRotor1.setPos(guiRotor1.getPos()));
         guiRotor2.setOnPositionChanged(() -> cryptoRotor2.setPos(guiRotor2.getPos()));
         guiRotor3.setOnPositionChanged(() -> cryptoRotor3.setPos(guiRotor3.getPos()));
 
-        // === tastetrykk-håndtering ===
+        // håndtering av tastetrykk
         scene.setOnKeyPressed(event -> {
             String key = event.getText();
-            if (key.matches("[a-zA-Z]")) {
+            if (key.matches("[a-zA-Z]")) {// sjekk om det er en gyldig bokstav
                 char letter = key.charAt(0);
+
+                // flow av Enigma-kryptering:
 
                 // gjennom plugboard
                 char substituted = plugboardPane.substitute(letter);
 
-                // til index 0–25
+                // gjør om til indeks (0-25)
                 int idx = Character.toUpperCase(substituted) - 'A';
 
                 // gjennom rotorene
@@ -98,16 +101,17 @@ public class Main extends Application {
                 // til bokstav
                 char enc = (char) ('A' + b3);
                 
+                // gjennom plugboard tilbake
                 char substitutedBack = plugboardPane.substitute(enc);
 
                 // highlight
                 keyboard.highlightKey(substitutedBack);
 
-                // steg rotorene (GUI + crypto)
+                // rotorene endres (GUI + crypto)
                 handleRotorStepping(cryptoRotor1, cryptoRotor2, cryptoRotor3,
                                     guiRotor1, guiRotor2, guiRotor3);
 
-                // log
+                // Enigma flow loggin
                 System.out.println("=== Enigma Flow ===");
                 System.out.println("Trykket: " + Character.toUpperCase(letter));
                 System.out.println("Etter plugboard: " + substituted);
@@ -137,7 +141,7 @@ public class Main extends Application {
             }
         });
 
-        // === vindu ===
+        // vindu 
         primaryStage.setScene(scene);
         primaryStage.setTitle("Enigma Simulator");
         primaryStage.show();
@@ -149,7 +153,6 @@ public class Main extends Application {
 
     /**
      * Stepping-metoden som sikrer korrekt Enigma-logikk.
-     * Kun aktivert for tastetrykk, ikke for knappene på GUI.
      */
     private void handleRotorStepping(CryptoRotor rotor1, CryptoRotor rotor2, CryptoRotor rotor3,
                                      GUIRotor gui1, GUIRotor gui2, GUIRotor gui3) {

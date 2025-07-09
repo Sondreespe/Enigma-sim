@@ -1,6 +1,6 @@
 package enigma;
 
-public interface Rotor {
+public interface IRotor {
 
     /**
      * Roterer opp rotoren angitt ved index.

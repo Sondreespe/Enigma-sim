@@ -5,7 +5,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.geometry.Pos;
 
-public class GUIRotor implements Rotor {
+public class GUIRotor implements IRotor {
 
     private int position = 0;
     private final Label rotorLabel;

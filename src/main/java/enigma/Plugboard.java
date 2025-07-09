@@ -6,6 +6,7 @@ import javafx.geometry.Pos;
 import java.util.HashMap;
 import java.util.Map;
 
+
 public class Plugboard extends GridPane {
 
     private Map<Character, Character> plugMap = new HashMap<>();
@@ -74,8 +75,7 @@ public class Plugboard extends GridPane {
 
             colorIndex++; // itererer fargeindeksen for neste par
 
-            //System.out.println("Koblet " + firstSelected + " ↔ " + letter);
-
+        
             // nullstiller førstevalget og er klar for et nytt par
             firstSelected = null;
         }
