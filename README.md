@@ -4,7 +4,7 @@ Apllikasjonen er laget i Java med JavaFx for  GUI, og etterligner krypteringspro
 
 ---------------------------------------------------------------------------------------------------------------------------------
 ## Hva er en Enigma-maskin
-- En enigma masking er et kryptering instrument som kan kryptere bokstaver og dermed også setninger. Den ble brukt av Tyskland i 2.verdenskrig til å sende konfidensiale meldinger over morse til sine allierte. Maskinen hadde en enkel funksjonalitet og mekanikk, samt ca **1.5 x 10^20** mulige kombinasjoner/innstillinger. Dette gjorde den perfekt for militær bruk.
+- En enigma masking er et kryptering instrument som kan kryptere bokstaver og dermed også setninger. Den ble brukt av Tyskland i 2.verdenskrig til å sende konfidensiale meldinger over morse til sine allierte. Maskinen hadde en enkel funksjonalitet og mekanikk, samt ca **1.5 x 10^20** mulige kombinasjoner/innstillinger.
 
 ## Oppbygning
 maskinen er bygd opp av tre deler. **Rotorene med reflektor**, **GUI-tastaturet med lyseffekt** og **plugboardet**. Under skal jeg forklare grunndigere mekanikken bak dette
@@ -22,12 +22,14 @@ maskinen er bygd opp av tre deler. **Rotorene med reflektor**, **GUI-tastaturet 
  Trykket bokstav -> plugboard -> rotor høyre -> rotor midten -> rotor venstre -> reflektor -> rotor venstre -> rotor midt -> rotor øyre -> lyser opp.
 
 
+
 ## Hvordan ta den i bruk:
 - **Start** apllikasjonen ved å gå til filen src/Java/enigma/Main.java bla helt nederst til "main"-funskjonen og trykk **run**.
 - **Husk eller skriv ned** rotor posisjonene og koblingene du har gjort på plugboardet.
 - **Trykk på en bokstav** på tastaturet til pc´en din.
 - **Den kryperte bokstaven** vil lyse opp på tastaturet på skjermen din.
-- **For å dekryptere bokstaven** må du stille inne maskinen med samme koblinger og samme rotor-posisjoner som da du først startet. 
+- **For å dekryptere bokstaven** må du stille inne maskinen med samme koblinger og samme rotor-posisjoner som da du først startet.
+Så må du skrive inn de krypterte bokstavene. Da vil den originale inputen lyse opp. 
 - **Trykk på reset-knappen** om du ønsker å fjerne alle koblinger og sette alle rotor-posisjoer til 0.
 
 
