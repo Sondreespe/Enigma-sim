@@ -19,7 +19,7 @@ maskinen er bygd opp av tre deler. **Rotorene med reflektor**, **GUI-tastaturet 
 - Etter at bokstaven har passert gjennom alle tre rotorene sender reflektoren signalet tilbake. Dette signalet skal være symetrisk og kosntant slik det er mulig å dekryptere bokstaven. 
 
 ### Flow chart av prosessen:
- Trykket bokstav -> plugboard -> rotor høyre -> rotor midten -> rotor venstre -> reflektor -> rotor venstre -> rotor midt -> rotor øyre -> lyser opp.
+ Trykket bokstav -> plugboard -> rotor høyre -> rotor midten -> rotor venstre -> reflektor -> rotor venstre -> rotor midt -> rotor øyre -> plugboard -> kryptert bokstav lyser opp.
 
 
 
