@@ -4,7 +4,8 @@ Apllikasjonen er laget i Java med JavaFx for  GUI, og etterligner krypteringspro
 
 ---------------------------------------------------------------------------------------------------------------------------
 
-
+## Hvordan Bruke
+- ** Start ** applikasjonen ved å trykke
 
 
 
