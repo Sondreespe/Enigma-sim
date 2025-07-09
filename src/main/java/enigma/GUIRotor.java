@@ -70,7 +70,8 @@ public class GUIRotor implements IRotor {
     }
 
     private void updateDisplay() {
-        rotorLabel.setText(Integer.toString(position + 1));
+        char letter = (char) ('A' + position);
+        rotorLabel.setText(Character.toString(letter));
     }
 
     public VBox getView() {
